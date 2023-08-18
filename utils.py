@@ -179,7 +179,7 @@ def replace_base(filename, homo):
     target_dna_seq = target_dna_seq_2 + target_dna_seq_1
     replace_dna_seq = replace_dna_seq_2 + replace_dna_seq_1
 
-    # 打开文件并读取所有行
+    # open file
     with open(filename, "r") as f:
         seqs = []
         for line in f:
@@ -192,8 +192,8 @@ def replace_base(filename, homo):
         new_seq = replace_func(seq, homo, target_dna_seq, replace_dna_seq)
         replaced_seqs.append(new_seq)
 
-    # 将新的字符串写入到新文件中
-    new_filename = filename.split('.')[0] + '_new.txt'
+    # write the char to file
+    new_filename = filename.split('.')[0] + '_replaced.txt'
     with open(new_filename, "w") as new_file:
         for item in replaced_seqs:
             new_file.write(''.join(item) + '\n')
@@ -357,20 +357,33 @@ def inverse_func(dna_seq, homopolymer, target_seqs, replaced_seqs):
     return dna_replaced_seq
 
 
-def gen_homo_seq(option, dna_length, homo_cons):
+def gen_homo_seq(codec, generated, dna_length, homo_cons):
     seq = []
     base_dict = ['A', 'C', 'G', 'T']
     base_count = 1
     last_base = ''
     for i in range(dna_length):
-        if base_count == homo_cons:
-            base_dict.remove(seq[-1])
-            base = random.choice(base_dict)
-            base_dict.append(seq[-1])
-        else:
-            if option == 'iid':
+        if codec == 'Transfer':
+            if base_count == homo_cons:
+                base_dict.remove(seq[-1])
                 base = random.choice(base_dict)
-            elif option == 'markov':
+                base_dict.append(seq[-1])
+            else:
+                if generated == 'iid':
+                    base = random.choice(base_dict)
+                elif generated == 'markov':
+                    if i == 0:
+                        base = random.choice(base_dict)
+                    else:
+                        weights = [0.4 if char == last_base else 0.2 for char in base_dict]
+                        base = random.choices(base_dict, weights=weights)[0]
+                else:
+                    raise ValueError("Check the option of Generating DNA data! (Option: iid or markov)")
+
+        elif codec == 'Homopolymer':
+            if generated == 'iid':
+                base = random.choice(base_dict)
+            elif generated == 'markov':
                 if i == 0:
                     base = random.choice(base_dict)
                 else:
@@ -378,6 +391,10 @@ def gen_homo_seq(option, dna_length, homo_cons):
                     base = random.choices(base_dict, weights=weights)[0]
             else:
                 raise ValueError("Check the option of Generating DNA data! (Option: iid or markov)")
+
+        else:
+            raise ValueError("Check the option of codec_type! (Option: Transfer or Homopolymer)")
+
         seq.append(base)
         if base == last_base:
             base_count += 1
@@ -388,8 +405,8 @@ def gen_homo_seq(option, dna_length, homo_cons):
     return seq
 
 
-def generator_seq(option, num_seq, seq_length, homo_cons):
+def generator_seq(option_codec, option_generated, num_seq, seq_length, homo_cons):
     dna_seqs = []
     for i in range(num_seq):
-        dna_seqs.append(gen_homo_seq(option, seq_length, homo_cons))
+        dna_seqs.append(gen_homo_seq(option_codec, option_generated, seq_length, homo_cons))
     return dna_seqs
