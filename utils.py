@@ -179,7 +179,7 @@ def replace_base(filename, homo):
     target_dna_seq = target_dna_seq_2 + target_dna_seq_1
     replace_dna_seq = replace_dna_seq_2 + replace_dna_seq_1
 
-    # 打开文件并读取所有行
+    # open file
     with open(filename, "r") as f:
         seqs = []
         for line in f:
@@ -192,7 +192,7 @@ def replace_base(filename, homo):
         new_seq = replace_func(seq, homo, target_dna_seq, replace_dna_seq)
         replaced_seqs.append(new_seq)
 
-    # 将新的字符串写入到新文件中
+    # write the char to file
     new_filename = filename.split('.')[0] + '_replaced.txt'
     with open(new_filename, "w") as new_file:
         for item in replaced_seqs:
