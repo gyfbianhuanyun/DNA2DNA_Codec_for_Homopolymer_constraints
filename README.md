@@ -61,6 +61,39 @@ Python main.py --options information
 --encoded_data_filename: The filename of the encoded data
 
 # Other codec processing options
---random_seed: Calculate the ratio of GC content in DNA data or not
---cal_gc: Whether to compress binary data
+--random_seed: The seed of random generator
+--cal_gc: Calculate the ratio of GC content in DNA data
+```
+
+### Example
+#### 1. Using Homopolymer encoding to encode DNA data
+
+DNA sequence length is 100, DNA data filename is 'DNA_data.txt', target homopolymer constraint is 3, and Encoded DNA data is 'Enc_DNA.txt'.
+```
+python main.py --codec_type Homopolymer --dna_l_list [100] --dna_data_file 'DNA_data.txt' --write_encoded_data True --encoded_data_filename 'Enc_DNA.txt' --homo_list [3]
+```
+
+#### 2. Using Transfer encoding to encode DNA data
+
+DNA sequence length is 100, DNA data filename is 'DNA_data.txt', original homopolymer constraint is 4, target homopolymer constraint is 3, and Encoded DNA data is 'Trans_DNA.txt'.
+```
+python main.py --codec_type Transfer --dna_l_list [100] --dna_data_file 'DNA_data.txt' --write_encoded_data True --encoded_data_filename 'Trans_DNA.txt' --homo_list [4] --homo_t_list [3]
+```
+
+#### 3. If you need to generate random DNA sequences
+
+The number of DNA bases is 10,000, and the random generation seed is 111.
+
+##### A. Independent and identically distributed sequence generation (i.i.d)
+
+Using Homopolymer encoding to encode DNA data, DNA sequence length is 100, target homopolymer constraint is 3, and Encoded DNA data is 'Enc_DNA.txt'.
+```
+python main.py --codec_type Homopolymer --dna_l_list [100] --dna_num 10000 --generated_type iid --homo_list [3] --write_encoded_data True --write_generated_data True --encoded_data_filename ''Enc_DNA.txt'' --random_seed 111
+```
+
+##### B. Markov sequence generation (Markov)
+
+Using Transfer encoding to encode DNA data, DNA sequence length is 100, original homopolymer constraint is 4, target homopolymer constraint is 3, and Encoded DNA data is 'Trans_DNA.txt'.
+```
+python main.py --codec_type Transfer --dna_l_list [100] --dna_num 10000 --generated_type markov --homo_list [4] --homo_t_list [3] --write_encoded_data True --write_generated_data True --encoded_data_filename ''Trans_DNA.txt'' --random_seed 111
 ```
