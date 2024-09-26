@@ -88,12 +88,12 @@ The number of DNA bases is 10,000, and the random generation seed is 111.
 
 Using Homopolymer encoding to encode DNA data, DNA sequence length is 100, target homopolymer constraint is 3, and Encoded DNA data is 'Enc_DNA.txt'.
 ```
-python main.py --codec_type Homopolymer --dna_l_list [100] --dna_num 10000 --generated_type iid --homo_list [3] --write_encoded_data True --write_generated_data True --encoded_data_filename ''Enc_DNA.txt'' --random_seed 111
+python main.py --codec_type Homopolymer --dna_l_list [100] --dna_num 10000 --generated_type iid --homo_list [3] --write_encoded_data True --write_generated_data True --encoded_data_filename 'Enc_DNA.txt' --random_seed 111
 ```
 
 ##### B. Markov sequence generation (Markov)
 
 Using Transfer encoding to encode DNA data, DNA sequence length is 100, original homopolymer constraint is 4, target homopolymer constraint is 3, and Encoded DNA data is 'Trans_DNA.txt'.
 ```
-python main.py --codec_type Transfer --dna_l_list [100] --dna_num 10000 --generated_type markov --homo_list [4] --homo_t_list [3] --write_encoded_data True --write_generated_data True --encoded_data_filename ''Trans_DNA.txt'' --random_seed 111
+python main.py --codec_type Transfer --dna_l_list [100] --dna_num 10000 --generated_type markov --homo_list [4] --homo_t_list [3] --write_encoded_data True --write_generated_data True --encoded_data_filename 'Trans_DNA.txt' --random_seed 111
 ```
